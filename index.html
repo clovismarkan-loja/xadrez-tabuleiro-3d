@@ -168,8 +168,10 @@ async function init(){
   }
   await buildGame();
   document.getElementById('loading').classList.add('hide');
+  ready = true;
   setMode(document.querySelector('#tabs button.on').dataset.tab==='game' ? 'game' : 'board'); setCam('persp');
 }
+let ready = false;
 
 // ---- Jogo montado: tabuleiro + divisor + 32 peças
 const gameGroup = new THREE.Group(); scene.add(gameGroup);
@@ -211,6 +213,7 @@ function setTab(t){
 }
 function setMode(m){
   mode=m;
+  if(!ready) return; // init() aplica o modo escolhido quando terminar de carregar
   document.querySelectorAll('#modes button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
   boardGroup.visible = m==='board';
   gameGroup.visible = m==='game';
